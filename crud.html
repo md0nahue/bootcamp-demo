@@ -2,22 +2,115 @@
 <body>
 Hello
 
-<input type="text" id="name">
-<select id="language">
-  <option value="ruby">Ruby</option>
-  <option value="python">Python</option>
-</select>
-<button id="create">Create new User</button>
+<div id="users"></div>
+<br>
+<br>
+<br>
+<br>
+<hr>
+
+<div id ="create-form">
+  <input type="text" id="name">
+  <select id="language">
+    <option value="ruby">Ruby</option>
+    <option value="python">Python</option>
+  </select>
+  <button id="create">Create new User</button>
+</div>
+
+<div id="edit-form" style="display:none;">
+  <input type="hidden" id="user_id">
+  <input type="text" id="name-edit">
+  <select id="language-edit">
+    <option value="ruby">Ruby</option>
+    <option value="python">Python</option>
+  </select>
+  <button id="update">Update User</button>
+</div>
 </body>
+
+
 <script>
+  let users = []
+  let createButton = document.getElementById('create');
+  let updateButton = document.getElementById('update');
 
-  let button = document.getElementById('create');
+  function getUserById(id){
+    for(let i =0; i< users.length; i++){
+      if(users[i].id == id){
+        return user
+      }
+    }
+  }
 
-  button.addEventListener('click', () => {
-    let language = document.getElementById('name').value;
-    console.log(language)
+
+  function updateUserById(){
+    let newName = document.getElementById('name-edit').value
+    document.getElementById('name-edit').value = ""
+     let newLanguage = document.getElementById('language-edit').value
+      let id = document.getElementById('user_id').value
+      document.getElementById('user_id').value = ""
+
+     let newUser = {"id": id, "name": newName, "language": newLanguage}
+
+    for(let i =0; i< users.length; i++){
+      if(users[i].id == id){
+        users[i] = newUser
+      }
+    }
+
+    showCreateForm()
+  }
+
+  function showEditForm(){
+    document.getElementById("create-form").style.display = 'none'
+    document.getElementById("edit-form").style.display = 'inline'
+
+  }
+
+  function showCreateForm(){
+    document.getElementById("create-form").style.display = 'inline'
+    document.getElementById("edit-form").style.display = 'none'
+
+  }
+  function showEditUserForm(id){
+    showEditForm()
+
+    let user = getUserById(id)
+    document.getElementById('user_id').value = id
+
+    document.getElementById('name-edit').value = user.name
+    document.getElementById('language-edit').value = user.language
+  }
+
+  function writeUsersToPage(users){
+    let displayText = ""
+
+    for(let i=0; i< users.length; i++){
+      user = users[i]
+      displayText = displayText + users[i].id + " "
+      displayText = displayText + users[i].name + " "
+      displayText = displayText + users[i].language + " "
+      displayText = displayText + `<button class="edit" onclick="showEditUserForm(${users[i].id})">Edit</button>`
+      displayText = displayText + "<br><hr>"
+    }
+
+    document.getElementById('users').innerHTML = displayText;
+  }
+
+  createButton.addEventListener('click', () => {
+    let name = document.getElementById('name').value;
+    document.getElementById('name').value = ""
+    let language = document.getElementById('language').value;
+    let id = users.length + 1
+    users.push({"id": id, "name": name, "language": language})
+    writeUsersToPage(users)
   });
 
+  updateButton.addEventListener('click', () => {
+    updateUserById()
+    writeUsersToPage(users)
+  });
 
 </script>
 </html>
