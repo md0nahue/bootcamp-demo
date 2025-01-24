@@ -1,0 +1,23 @@
+<html>
+<body>
+Hello
+
+<input type="text" id="name">
+<select id="language">
+  <option value="ruby">Ruby</option>
+  <option value="python">Python</option>
+</select>
+<button id="create">Create new User</button>
+</body>
+<script>
+
+  let button = document.getElementById('create');
+
+  button.addEventListener('click', () => {
+    let language = document.getElementById('name').value;
+    console.log(language)
+  });
+
+
+</script>
+</html>
